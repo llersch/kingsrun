@@ -7,10 +7,8 @@
 //-----------------------------------------------------------------------------
 #endregion
 
-#region Using Statements
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-#endregion
 
 namespace GameStateManagement
 {
@@ -20,18 +18,8 @@ namespace GameStateManagement
      or "pause the game". */
     public class InputState
     {
-        public readonly KeyboardState CurrentKeyboardState;
-        public readonly KeyboardState LastKeyboardState;
-
-
-
-
-        // Constructs a new input state.
-        public InputState()
-        {
-            CurrentKeyboardState = new KeyboardState();
-            LastKeyboardState = new KeyboardState();
-        }
+        private KeyboardState CurrentKeyboardState = new KeyboardState();
+        private KeyboardState LastKeyboardState = new KeyboardState();
 
 
         // Reads the latest state of the keyboard and gamepad.
@@ -46,55 +34,10 @@ namespace GameStateManagement
          controllingPlayer parameter specifies which player to read input for.
          If this is null, it will accept input from any player. When a keypress
          is detected, the output playerIndex reports which player pressed it.*/
-        public bool IsNewKeyPress(Keys key, PlayerIndex? controllingPlayer,
-                                            out PlayerIndex playerIndex)
+        public bool IsNewKeyPress(Keys key)
         {
-            if (controllingPlayer.HasValue)
-            {
-                // Read input from the specified player.
-                playerIndex = controllingPlayer.Value;
-
-                int i = (int)playerIndex;
-
-                return (CurrentKeyboardStates[i].IsKeyDown(key) &&
-                        LastKeyboardStates[i].IsKeyUp(key));
-            }
-            else
-            {
-                // Accept input from any player.
-                return (IsNewKeyPress(key, PlayerIndex.One, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Two, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Three, out playerIndex) ||
-                        IsNewKeyPress(key, PlayerIndex.Four, out playerIndex));
-            }
-        }
-
-
-        /* Helper for checking if a button was newly pressed during this update.
-         The controllingPlayer parameter specifies which player to read input for.
-         If this is null, it will accept input from any player. When a button press
-         is detected, the output playerIndex reports which player pressed it. */
-        public bool IsNewButtonPress(Buttons button, PlayerIndex? controllingPlayer,
-                                                     out PlayerIndex playerIndex)
-        {
-            if (controllingPlayer.HasValue)
-            {
-                // Read input from the specified player.
-                playerIndex = controllingPlayer.Value;
-
-                int i = (int)playerIndex;
-
-                return (CurrentGamePadStates[i].IsButtonDown(button) &&
-                        LastGamePadStates[i].IsButtonUp(button));
-            }
-            else
-            {
-                // Accept input from any player.
-                return (IsNewButtonPress(button, PlayerIndex.One, out playerIndex) ||
-                        IsNewButtonPress(button, PlayerIndex.Two, out playerIndex) ||
-                        IsNewButtonPress(button, PlayerIndex.Three, out playerIndex) ||
-                        IsNewButtonPress(button, PlayerIndex.Four, out playerIndex));
-            }
+            return (CurrentKeyboardState.IsKeyDown(key) &&
+                    LastKeyboardState.IsKeyUp(key));
         }
 
 
@@ -102,13 +45,10 @@ namespace GameStateManagement
          The controllingPlayer parameter specifies which player to read input for.
          If this is null, it will accept input from any player. When the action
          is detected, the output playerIndex reports which player pressed it. */
-        public bool IsMenuSelect(PlayerIndex? controllingPlayer,
-                                 out PlayerIndex playerIndex)
+        public bool IsMenuSelect()
         {
-            return IsNewKeyPress(Keys.Space, controllingPlayer, out playerIndex) ||
-                   IsNewKeyPress(Keys.Enter, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.A, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
+            return IsNewKeyPress(Keys.Space) ||
+                   IsNewKeyPress(Keys.Enter);
         }
 
 
@@ -116,51 +56,36 @@ namespace GameStateManagement
          The controllingPlayer parameter specifies which player to read input for.
          If this is null, it will accept input from any player. When the action
          is detected, the output playerIndex reports which player pressed it. */
-        public bool IsMenuCancel(PlayerIndex? controllingPlayer,
-                                 out PlayerIndex playerIndex)
+        public bool IsMenuCancel()
         {
-            return IsNewKeyPress(Keys.Escape, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.B, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex);
+            return IsNewKeyPress(Keys.Escape);
         }
 
 
         /* Checks for a "menu up" input action.
          The controllingPlayer parameter specifies which player to read
          input for. If this is null, it will accept input from any player. */
-        public bool IsMenuUp(PlayerIndex? controllingPlayer)
+        public bool IsMenuUp()
         {
-            PlayerIndex playerIndex;
-
-            return IsNewKeyPress(Keys.Up, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.DPadUp, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.LeftThumbstickUp, controllingPlayer, out playerIndex);
+            return IsNewKeyPress(Keys.Up);
         }
 
 
         /* Checks for a "menu down" input action.
          The controllingPlayer parameter specifies which player to read
          input for. If this is null, it will accept input from any player. */
-        public bool IsMenuDown(PlayerIndex? controllingPlayer)
+        public bool IsMenuDown()
         {
-            PlayerIndex playerIndex;
-
-            return IsNewKeyPress(Keys.Down, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.DPadDown, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.LeftThumbstickDown, controllingPlayer, out playerIndex);
+            return IsNewKeyPress(Keys.Down);
         }
 
 
         /* Checks for a "pause the game" input action.
          The controllingPlayer parameter specifies which player to read
          input for. If this is null, it will accept input from any player. */
-        public bool IsPauseGame(PlayerIndex? controllingPlayer)
+        public bool IsPauseGame()
         {
-            PlayerIndex playerIndex;
-
-            return IsNewKeyPress(Keys.Escape, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.Back, controllingPlayer, out playerIndex) ||
-                   IsNewButtonPress(Buttons.Start, controllingPlayer, out playerIndex);
+            return IsNewKeyPress(Keys.Escape);
         }
 
 

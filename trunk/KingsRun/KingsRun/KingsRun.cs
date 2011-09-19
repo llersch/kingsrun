@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using GameStateManagement;
+
 namespace KingsRun
 {
     /// <summary>
@@ -16,8 +18,17 @@ namespace KingsRun
     /// </summary>
     public class KingsRun : Microsoft.Xna.Framework.Game
     {
+        #region Fields
+
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+
+        ScreenManager screenManager;
+        bool AIturn;
+
+
+
+        #endregion
 
         public KingsRun()
         {
