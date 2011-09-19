@@ -35,8 +35,22 @@ namespace GameStateManagement
     /// </summary>
     public abstract class GameScreen
     {
-        #region Properties
 
+        #region Fields
+
+        private bool isPopup = false;
+        private TimeSpan transitionOnTime = TimeSpan.Zero;
+        private TimeSpan transitionOffTime = TimeSpan.Zero;
+        private float transitionPosition = 1;
+        private ScreenState screenState = ScreenState.TransitionOn;
+        private bool isExiting = false;
+        private bool otherScreenHasFocus;
+        private ScreenManager screenManager;
+        private PlayerIndex? controllingPlayer;
+
+        #endregion
+
+        #region Properties
 
         /// <summary>
         /// Normally when one screen is brought up over the top of another,
@@ -51,9 +65,7 @@ namespace GameStateManagement
             protected set { isPopup = value; }
         }
 
-        bool isPopup = false;
-
-
+        
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition on when it is activated.
@@ -64,9 +76,7 @@ namespace GameStateManagement
             protected set { transitionOnTime = value; }
         }
 
-        TimeSpan transitionOnTime = TimeSpan.Zero;
-
-
+        
         /// <summary>
         /// Indicates how long the screen takes to
         /// transition off when it is deactivated.
@@ -76,8 +86,6 @@ namespace GameStateManagement
             get { return transitionOffTime; }
             protected set { transitionOffTime = value; }
         }
-
-        TimeSpan transitionOffTime = TimeSpan.Zero;
 
 
         /// <summary>
@@ -91,9 +99,7 @@ namespace GameStateManagement
             protected set { transitionPosition = value; }
         }
 
-        float transitionPosition = 1;
-
-
+        
         /// <summary>
         /// Gets the current alpha of the screen transition, ranging
         /// from 255 (fully active, no transition) to 0 (transitioned
@@ -114,9 +120,7 @@ namespace GameStateManagement
             protected set { screenState = value; }
         }
 
-        ScreenState screenState = ScreenState.TransitionOn;
-
-
+        
         /// <summary>
         /// There are two possible reasons why a screen might be transitioning
         /// off. It could be temporarily going away to make room for another
@@ -130,8 +134,6 @@ namespace GameStateManagement
             get { return isExiting; }
             protected internal set { isExiting = value; }
         }
-
-        bool isExiting = false;
 
 
         /// <summary>
@@ -147,9 +149,7 @@ namespace GameStateManagement
             }
         }
 
-        bool otherScreenHasFocus;
-
-
+        
         /// <summary>
         /// Gets the manager that this screen belongs to.
         /// </summary>
@@ -159,9 +159,7 @@ namespace GameStateManagement
             internal set { screenManager = value; }
         }
 
-        ScreenManager screenManager;
-
-
+        
         /// <summary>
         /// Gets the index of the player who is currently controlling this screen,
         /// or null if it is accepting input from any player. This is used to lock
@@ -176,13 +174,9 @@ namespace GameStateManagement
             internal set { controllingPlayer = value; }
         }
 
-        PlayerIndex? controllingPlayer;
-
-
         #endregion
 
         #region Initialization
-
 
         /// <summary>
         /// Load graphics content for the screen.
@@ -195,11 +189,10 @@ namespace GameStateManagement
         /// </summary>
         public virtual void UnloadContent() { }
 
-
         #endregion
 
-        #region Update and Draw
 
+        #region Update and Draw
 
         /// <summary>
         /// Allows the screen to run logic, such as updating the transition position.

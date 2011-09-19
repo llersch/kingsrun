@@ -28,18 +28,18 @@ namespace GameStateManagement
     {
         #region Fields
 
-        List<GameScreen> screens = new List<GameScreen>();
-        List<GameScreen> screensToUpdate = new List<GameScreen>();
+        private List<GameScreen> screens = new List<GameScreen>();
+        private List<GameScreen> screensToUpdate = new List<GameScreen>();
 
-        InputState input = new InputState();
+        private InputState input = new InputState();
 
-        SpriteBatch spriteBatch;
-        SpriteFont font;
-        Texture2D blankTexture;
+        private SpriteBatch spriteBatch;
+        private SpriteFont font;
+        private Texture2D blankTexture;
 
-        bool isInitialized;
+        private bool isInitialized;
 
-        bool traceEnabled;
+        private bool traceEnabled;
 
         #endregion
 
