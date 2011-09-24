@@ -12,7 +12,7 @@ using System;
 using Microsoft.Xna.Framework;
 #endregion
 
-namespace GameStateManagement
+namespace KingsRun
 {
     /// <summary>
     /// Enum describes the screen transition state.
@@ -190,7 +190,6 @@ namespace GameStateManagement
         public virtual void UnloadContent() { }
 
         #endregion
-
 
         #region Update and Draw
 
