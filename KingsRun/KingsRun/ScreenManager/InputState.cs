@@ -24,7 +24,7 @@ namespace KingsRun
     {
         #region Fields
 
-        public const int MaxInputs = 1;
+        public const int MaxInputs = 4;
 
         public readonly KeyboardState[] CurrentKeyboardStates;
         public readonly GamePadState[] CurrentGamePadStates;
@@ -74,11 +74,9 @@ namespace KingsRun
             {
                 LastKeyboardStates[i] = CurrentKeyboardStates[i];
                 LastGamePadStates[i] = CurrentGamePadStates[i];
-                LastMouseState = CurrentMouseState;
 
                 CurrentKeyboardStates[i] = Keyboard.GetState((PlayerIndex)i);
-                CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);
-                CurrentMouseState = Mouse.GetState();                
+                CurrentGamePadStates[i] = GamePad.GetState((PlayerIndex)i);               
 
                 // Keep track of whether a gamepad has ever been
                 // connected, so we can detect if it is unplugged.

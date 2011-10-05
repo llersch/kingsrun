@@ -21,7 +21,6 @@ namespace KingsRun
         static public bool AIturn = false;
        
         GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
         ScreenManager screenManager;
         
         #endregion
@@ -30,13 +29,15 @@ namespace KingsRun
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
-            //spriteBatch = new SpriteBatch(GraphicsDevice);
-            screenManager = new ScreenManager(this);
-
+            
             this.IsMouseVisible = true;
+            graphics.PreferredBackBufferWidth = 675;
+            graphics.PreferredBackBufferHeight = 750;
 
+            screenManager = new ScreenManager(this);
             Components.Add(screenManager);
             screenManager.AddScreen(new GameplayScreen(), null);
+            screenManager.AddScreen(new MainMenuScreen(), null);
         }
 
 
@@ -45,7 +46,7 @@ namespace KingsRun
         /// </summary>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.BurlyWood);
+            GraphicsDevice.Clear(Color.Black);
 
             // The real drawing happens inside the screen manager component.
             base.Draw(gameTime);

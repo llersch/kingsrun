@@ -57,6 +57,10 @@ namespace KingsRun
             set { text = value; }
         }
 
+        public Rectangle TextBox
+        {
+            get { return textBox; }
+        }
 
         #endregion
 
@@ -140,7 +144,8 @@ namespace KingsRun
             SpriteBatch spriteBatch = screenManager.SpriteBatch;
             SpriteFont font = screenManager.Font;
 
-            Vector2 origin = new Vector2(0, font.LineSpacing / 2);
+            //Vector2 origin = new Vector2(0, font.LineSpacing / 2);
+            Vector2 origin = font.MeasureString(text) / 2;
 
             spriteBatch.DrawString(font, text, position, color, 0,
                                    origin, scale, SpriteEffects.None, 0);
