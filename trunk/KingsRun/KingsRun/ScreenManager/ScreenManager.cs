@@ -178,7 +178,6 @@ namespace KingsRun
                     if (!otherScreenHasFocus)
                     {
                         screen.HandleInput(input);
-
                         otherScreenHasFocus = true;
                     }
 

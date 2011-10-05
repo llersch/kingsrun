@@ -28,7 +28,7 @@ namespace KingsRun
             if (content == null)
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
-            backgroundTexture = content.Load<Texture2D>("background");
+            backgroundTexture = content.Load<Texture2D>("tabuleiro");
         }
 
 
@@ -37,7 +37,7 @@ namespace KingsRun
         /// </summary>
         public override void UnloadContent()
         {
-            //content.Unload();
+            content.Unload();
         }
 
         #region Update and Draw
@@ -68,13 +68,21 @@ namespace KingsRun
             byte fade = TransitionAlpha;
 
             spriteBatch.Begin();
-
             spriteBatch.Draw(backgroundTexture, fullscreen,
                              new Color(fade, fade, fade));
-
             spriteBatch.End();
         }
 
+        //Handle inputs for this screen
+        public override void HandleInput(InputState input)
+        {
+            if (input.IsNewMousePress())
+            {
+                string message = input.CurrentMouseState.X + " , " + input.CurrentMouseState.Y;
+                MessageBoxScreen coord = new MessageBoxScreen(message);
+                ScreenManager.AddScreen(coord, base.ControllingPlayer);
+            }      
+        }
 
         #endregion
     }

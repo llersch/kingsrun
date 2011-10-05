@@ -89,6 +89,14 @@ namespace KingsRun
                     selectedEntry = 0;
             }
 
+            foreach (MenuEntry m in menuEntries)
+            {
+                if (input.IsMouseOverRect(m.TextBox))
+                {
+                    selectedEntry = menuEntries.IndexOf(m);
+                }
+            }
+
             // Accept or cancel the menu? We pass in our ControllingPlayer, which may
             // either be null (to accept input from any player) or a specific index.
             // If we pass a null controlling player, the InputState helper returns to
@@ -164,8 +172,10 @@ namespace KingsRun
         {
             SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             SpriteFont font = ScreenManager.Font;
+            Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
 
-            Vector2 position = new Vector2(100, 150);
+            //Vector2 position = new Vector2(100, 150);
+            Vector2 position = new Vector2(viewport.Width / 2, viewport.Height / 3);
 
             // Make the menu slide into place during transitions, using a
             // power curve to make things look more interesting (this makes
@@ -173,9 +183,11 @@ namespace KingsRun
             float transitionOffset = (float)Math.Pow(TransitionPosition, 2);
 
             if (ScreenState == ScreenState.TransitionOn)
-                position.X -= transitionOffset * 256;
+                //position.X -= transitionOffset * 256;
+                position.Y -= transitionOffset * 100;
             else
-                position.X += transitionOffset * 512;
+                //position.X += transitionOffset * 512;
+                position.Y -= transitionOffset * 200;
 
             spriteBatch.Begin();
 
@@ -192,7 +204,7 @@ namespace KingsRun
             }
 
             // Draw the menu title.
-            Vector2 titlePosition = new Vector2(426, 80);
+            Vector2 titlePosition = new Vector2(viewport.Width/2, viewport.Height/4);
             Vector2 titleOrigin = font.MeasureString(menuTitle) / 2;
             Color titleColor = new Color(192, 192, 192, TransitionAlpha);
             float titleScale = 1.25f;
