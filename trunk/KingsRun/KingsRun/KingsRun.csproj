@@ -109,9 +109,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Board\Hexagon.cs" />
-    <Compile Include="Board\Hexpart.cs" />
-    <Compile Include="Board\MapGrid.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="ScreenManager\InputState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
