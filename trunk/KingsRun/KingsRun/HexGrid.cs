@@ -7,36 +7,36 @@ namespace KingsRun
 {
     class HexGrid
     {
-        static int[] neighbors_C = {0, 1, 1, 0, -1, -1};
-        static int[,] neighbors_R = { { -1, -1, 0, 1, 0, -1 }, { -1, 0, 1, 1, 1, 0 } };
-        static int num_neighbors = 6;
+        static int[] NEIGHBORS_DI = {0, 1, 1, 0, -1, -1};
+        static int[,] NEIGHBORS_DJ = { { -1, -1, 0, 1, 0, -1 }, { -1, 0, 1, 1, 1, 0 } };
+        static int NUM_NEIGHBORS = 6;
 
-        int[] corners_Dx;
-        int[] corners_Dy;
-        int side;
+        int[] CORNERS_DX;
+        int[] CORNERS_DY;
+        int SIDE;
 
         int mX = 0;
         int mY = 0;
 
-        int mC = 0;
-        int mR = 0;
+        int mI = 0;
+        int mJ = 0;
 
-        int radius;
-        int height;
-        int width;
+        int RADIUS;
+        int WIDTH;
+        int HEIGHT;
 
         public HexGrid(int a_radius)
         {
-            radius = a_radius;
-            width = a_radius * 2;
-            height = (int)((float)a_radius * Math.Sqrt(3));
-            side = a_radius * 3 / 2;
+            RADIUS = a_radius;
+            WIDTH = a_radius * 2;
+            HEIGHT = (int)((float)a_radius * Math.Sqrt(3));
+            SIDE = a_radius * 3 / 2;
 
-            int[] cdx = {radius/2, side, width, side, radius/2, 0};
-            corners_Dx = cdx;
+            int[] cdx = { RADIUS / 2, SIDE, WIDTH, SIDE, RADIUS / 2, 0 };
+            CORNERS_DX = cdx;
 
-            int[] cdy = { 0, 0, height / 2, height, height, height / 2 };
-            corners_Dy = cdy;
+            int[] cdy = { 0, 0, HEIGHT / 2, HEIGHT, HEIGHT, HEIGHT / 2 };
+            CORNERS_DY = cdy;
         }
 
         
@@ -52,67 +52,67 @@ namespace KingsRun
 
         public int CenterX
         {
-            get { return mX + radius; }
+            get { return mX + RADIUS; }
         }
 
         public int CenterY
         {
-            get { return mY + height / 2; }
+            get { return mY + HEIGHT / 2; }
         }
 
         public int Column
         {
-            get { return mC; }
+            get { return mI; }
         }
 
         public int Row
         {
-            get { return mR; }
+            get { return mJ; }
         }
 
         public int NeighborCol(int neighborIdx)
         {
-            return mC + neighbors_C[neighborIdx];
+            return mI + NEIGHBORS_DI[neighborIdx];
         }
 
         public int NeighborRow(int neightborIdx)
         {
-            return mR + neighbors_R[mC % 2, neightborIdx];
+            return mJ + NEIGHBORS_DJ[mI % 2, neightborIdx];
         }
 
         public void ComputeCorners(int[] cornersX, int[] cornersY)
         {
-            for (int k = 0; k < num_neighbors; k++)
+            for (int k = 0; k < NUM_NEIGHBORS; k++)
             {
-                cornersX[k] = mX + corners_Dx[k];
-                cornersY[k] = mY + corners_Dy[k];
+                cornersX[k] = mX + CORNERS_DX[k];
+                cornersY[k] = mY + CORNERS_DY[k];
             }
         }
 
         public void SetCellIndex(int i, int j)
         {
-            mC = i;
-            mR = j;
-            mX = i * side;
-            mY = height * (2*j+(i%2))/2;
+            mI = i;
+            mJ = j;
+            mX = i * SIDE;
+            mY = HEIGHT * (2*j+(i%2))/2;
         }
 
         public void SetCellByPoint(int x, int y)
         {
-            int ci = (int)Math.Floor((float)x/(float)side);
-            int cx = x - side * ci;
+            int ci = (int)Math.Floor((float)x / (float)SIDE);
+            int cx = x - SIDE * ci;
 
-            int ty = y - (ci % 2) * height / 2;
-            int cj = (int)Math.Floor((float)ty/(float)height);
-            int cy = ty - height * cj;
+            int ty = y - (ci % 2) * HEIGHT / 2;
+            int cj = (int)Math.Floor((float)ty / (float)HEIGHT);
+            int cy = ty - HEIGHT * cj;
 
-            if (cx > Math.Abs(radius / 2 - radius * cy / height))
+            if (cx > Math.Abs(RADIUS / 2 - RADIUS * cy / HEIGHT))
             {
                 SetCellIndex(ci, cj);
             }
             else
             {
-                SetCellIndex(ci - 1, cj + (ci % 2) - ((cy < height / 2) ? 1 : 0));
+                SetCellIndex(ci - 1, cj + (ci % 2) - ((cy < HEIGHT / 2) ? 1 : 0));
             }
         }
 
