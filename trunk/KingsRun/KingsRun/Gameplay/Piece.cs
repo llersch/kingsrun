@@ -7,10 +7,10 @@ namespace KingsRun.Gameplay
 {
     class Piece
     {
-        Tuple<byte, byte> position = new Tuple<byte, byte>(0,0);
+        Tuple<int, int> position = new Tuple<int, int>(0,0);
         int status = 0;
 
-        public Tuple<byte, byte> Position
+        public Tuple<int, int> Position
         {
             get { return position; }
             set { position = value; }
@@ -22,12 +22,12 @@ namespace KingsRun.Gameplay
             set { status = value; }
         }
 
-        public byte X
+        public int X
         {
             get { return position.Item1; }
         }
 
-        public byte Y
+        public int Y
         {
             get { return position.Item2; }
         }

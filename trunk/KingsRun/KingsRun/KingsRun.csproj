@@ -113,6 +113,7 @@
     <Compile Include="Gameplay\BoardManager.cs" />
     <Compile Include="Gameplay\Piece.cs" />
     <Compile Include="HexGrid.cs" />
+    <Compile Include="InterfaceManager.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="ScreenManager\InputState.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
