@@ -109,6 +109,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Artificial Inteligence\AI.cs" />
     <Compile Include="Gameplay\BoardManager.cs" />
     <Compile Include="Gameplay\Piece.cs" />
     <Compile Include="HexGrid.cs" />
