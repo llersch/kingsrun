@@ -30,8 +30,8 @@ namespace KingsRun.Gameplay
                                       {OUT,OUT,OUT,OUT,IN ,OUT,OUT,OUT,OUT}};
 
         // Vectors used
-        readonly sbyte[] neighborsCol = { 0, 1, 1, 0, -1, -1 };
-        readonly sbyte[,] neighborsRow = {{ -1, -1, 0, 1, 0, 1 },
+        readonly int[] neighborsCol = { 0, 1, 1, 0, -1, -1 };
+        readonly int[,] neighborsRow = {{ -1, -1, 0, 1, 0, 1 },
                                         { -1,  0, 1, 1, 1, 0 }};
 
         #endregion
@@ -85,14 +85,14 @@ namespace KingsRun.Gameplay
 
         private bool isOccupied(Tuple<int, int> position)
         {
-            bool isPositionFree = true;
+            bool occupied = false;
 
             foreach (Piece piece in player1)
             {
                 if (piece.X == position.Item1 &&
                     piece.Y == position.Item2 &&
                     piece.Status == 0)
-                    isPositionFree = false;
+                    occupied = true;
             }
 
             foreach (Piece piece in player2)
@@ -100,31 +100,30 @@ namespace KingsRun.Gameplay
                 if (piece.X == position.Item1 &&
                     piece.Y == position.Item2 &&
                     piece.Status == 0)
-                    isPositionFree = false;
+                    occupied = true;
             }
 
-            return isPositionFree;
+            return occupied;
         }
 
-        public bool isOnBoard(Tuple<int,int> position)
+        public bool isOnBoard(Piece a_piece)
         {
-            if (position.Item1 < 0 ||
-                position.Item1 >= 9 ||
-                position.Item2 < 0 ||
-                position.Item2 >= 9)
+            if (a_piece.X < 0 || a_piece.X >= 9 || a_piece.Y < 0 || a_piece.Y >= 9)
+            {
                 return false;
+            }
 
-            if (boardCells[position.Item1, position.Item2] == OUT)
+            if (boardCells[a_piece.X, a_piece.Y] == OUT)
+            {
                 return false;
+            }
 
             return true;
         }
 
-        public Tuple<byte, byte> GetNeighbor(Piece a_piece, Neighbors a_neighbor)
+        public Tuple<int, int> GetNeighbor(Piece a_piece, Neighbors a_neighbor)
         {
-            //ARRUMAR ESTA PICA! A BONECA NÃO SABE SOMAR DOIS BYTES PELO VISTO! TEM QUE COMER MUITO FEIJÃO AINDA.
-            //return new Tuple<byte, byte>(   (byte)(a_piece.X + neighborsCol[(int)a_neighbor]) , a_piece.Y + neighborsRow[a_piece.X % 2, (int)a_neighbor]);
-            return new Tuple<byte, byte>(a_piece.X, a_piece.Y);
+            return new Tuple<int, int>(a_piece.X + neighborsCol[(int)a_neighbor], a_piece.Y + neighborsRow[a_piece.X % 2, (int)a_neighbor]);
         }
     }
 }
