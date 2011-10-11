@@ -7,20 +7,29 @@ namespace KingsRun.Gameplay
 {
     class Piece
     {
-        public Tuple<int, int> position = new Tuple<int, int>(0,0);
-        public int status = 0;
+        Tuple<byte, byte> position = new Tuple<byte, byte>(0,0);
+        int status = 0;
 
-        public Piece()
-            : this(null)
-        { }
-
-        public Piece(int row, int column)
-            : this(new Tuple<int,int>(row,column))
-        { }
-
-        public Piece(Tuple<int,int> initPos)
+        public Tuple<byte, byte> Position
         {
-            position = initPos;
+            get { return position; }
+            set { position = value; }
+        }
+
+        public int Status
+        {
+            get { return status; }
+            set { status = value; }
+        }
+
+        public byte X
+        {
+            get { return position.Item1; }
+        }
+
+        public byte Y
+        {
+            get { return position.Item2; }
         }
     }
 }
