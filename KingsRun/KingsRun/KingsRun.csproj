@@ -111,7 +111,6 @@
   <ItemGroup>
     <Compile Include="Gameplay\BoardManager.cs" />
     <Compile Include="Gameplay\Piece.cs" />
-    <Compile Include="Gameplay\Position.cs" />
     <Compile Include="HexGrid.cs" />
     <Compile Include="ScreenManager\GameScreen.cs" />
     <Compile Include="ScreenManager\InputState.cs" />

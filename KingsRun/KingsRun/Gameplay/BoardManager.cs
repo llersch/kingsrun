@@ -19,11 +19,11 @@ namespace KingsRun.Gameplay
      */
     class BoardManager
     {
-        private static const bool IN = true;
-        private static const bool OUT = false;
+        const bool IN = true;
+        const bool OUT = false;
 
         // Matrix that says if some cell is in the board
-        static const bool[,] cells = {{OUT,OUT,OUT,IN ,IN ,IN ,OUT,OUT,OUT},
+        readonly bool[,] cells = {{OUT,OUT,OUT,IN ,IN ,IN ,OUT,OUT,OUT},
                                       {OUT,IN ,IN ,IN ,IN ,IN ,IN ,IN ,OUT},
                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
@@ -34,8 +34,8 @@ namespace KingsRun.Gameplay
                                       {OUT,OUT,OUT,OUT,IN ,OUT,OUT,OUT,OUT}};
 
         // Vectors used
-        static const int[] neighborsCol = { 0, 1, 1, 0, -1, -1 };
-        static const int[,] neighborsRow = {{ -1, -1, 0, 1, 0, 1 },
+        readonly int[] neighborsCol = { 0, 1, 1, 0, -1, -1 };
+        readonly int[,] neighborsRow = {{ -1, -1, 0, 1, 0, 1 },
                                             { -1,  0, 1, 1, 1, 0 }};
 
         int turn = 0;
@@ -73,7 +73,7 @@ namespace KingsRun.Gameplay
 
         public List<Tuple<int,int>> PossibleMoves(Piece piece)
         {
-            List<Tuple<int, int>> result;
+            List<Tuple<int, int>> result = new List<Tuple<int,int>>();
 
             foreach (int direction in Enum.GetValues(typeof(Neighbors)))
             {
@@ -82,11 +82,12 @@ namespace KingsRun.Gameplay
 
                 aux = GetNeighbor(aux, direction);
 
-                while (isOnBoard(GetNeighbor(aux, direction)) && !isOccupied(aux))
+                /*while (isOnBoard(GetNeighbor(aux, direction)) && !isOccupied(aux))
                 {
-                    
-                }
+                    return result;                    
+                }*/
             }
+            return result;
         }
 
         private bool isOccupied(Tuple<int, int> position)
