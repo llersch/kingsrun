@@ -7,29 +7,19 @@ namespace KingsRun.Gameplay
 {
     class Piece
     {
-        Tuple<int, int> position = new Tuple<int, int>(0,0);
+        Position pos = new Position(0,0);
         int status = 0;
 
-        public Tuple<int, int> Position
+        public Position Position
         {
-            get { return position; }
-            set { position = value; }
+            get { return pos; }
+            set { pos = value; }
         }
 
         public int Status
         {
             get { return status; }
             set { status = value; }
-        }
-
-        public int X
-        {
-            get { return position.Item1; }
-        }
-
-        public int Y
-        {
-            get { return position.Item2; }
         }
     }
 }
