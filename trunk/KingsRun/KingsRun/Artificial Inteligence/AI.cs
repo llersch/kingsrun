@@ -23,7 +23,7 @@ namespace KingsRun
 
         private Piece bestPiece; //Melhor peca a ser movimentada
         private Position bestMove; // Melhor movimento a ser realizado pela peca acima
-        private int deep = 2; // Profundidade de avaliacao
+        private int deep = 1; // Profundidade de avaliacao
         private BoardManager board; // Tabuleiro do jogo
 
         #endregion
@@ -64,37 +64,40 @@ namespace KingsRun
 
                 List<Position> possibleMoves = board.PossibleMoves(piece);
 
-                foreach (Position move in possibleMoves)
+                if (possibleMoves.Count != 0)
                 {
-                    int moveScore; //Armazena o melhor score possivel de se obter, movendo a peca "piece" na posicao "move";
-                    this.board.MoveAndKill(piece, move);
-
-                    if (deep == 0)
+                    foreach (Position move in possibleMoves)
                     {
-                        moveScore = this.evaluate(myPieces, opPieces);
+                        int moveScore; //Armazena o melhor score possivel de se obter, movendo a peca "piece" na posicao "move";
+                        this.board.MoveAndKill(piece, move);
+
+                        if (deep == 0)
+                        {
+                            moveScore = this.evaluate(myPieces, opPieces);
+                        }
+                        else
+                        {
+                            this.deep--;
+                            moveScore = this.next(opPieces, myPieces);
+                            this.deep++;
+                        }
+
+                        if (moveScore >= bestMoveScore)
+                        {
+                            bestMoveScore = moveScore;
+                            this.bestMove = move; //determina o movimento que gera mais pontos
+                        }
+
+                        this.board.UndoMove();
                     }
-                    else
+
+                    //destroy possibleMoves
+
+                    if (bestMoveScore >= bestPieceScore)
                     {
-                        deep--;
-                        moveScore = this.next(opPieces, myPieces);
-                        deep++;
+                        bestPieceScore = bestMoveScore;
+                        this.bestPiece = piece; //determina a peca que gera mais pontos
                     }
-
-                    if (moveScore >= bestMoveScore)
-                    {
-                        bestMoveScore = moveScore;
-                        this.bestMove = move; //determina o movimento que gera mais pontos
-                    }
-
-                    this.board.UndoMove();
-                }
-
-                //destroy possibleMoves
-
-                if (bestMoveScore >= bestPieceScore)
-                {
-                    bestPieceScore = bestMoveScore;
-                    this.bestPiece = piece; //determina a peca que gera mais pontos
                 }
 
             }
@@ -129,7 +132,7 @@ namespace KingsRun
             // verifica se o rei inimigo pode ser vencido
             if (opPieces[9].Status > 0)
                 score = score + PESO_REI_INIMIGO;
-
+            //
             return (score);
         }
 
