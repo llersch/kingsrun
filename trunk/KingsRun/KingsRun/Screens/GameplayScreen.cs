@@ -15,9 +15,12 @@ namespace KingsRun
         ContentManager content;
         Texture2D backgroundTexture;
 
-        //em testes
-        HexGrid board = new HexGrid(47);
+        //Nossas Classes
+        BoardManager boardManager;
+        InterfaceManager interfaceManager;
         //
+
+        bool IAturn;
 
         #endregion
 
@@ -25,6 +28,11 @@ namespace KingsRun
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
+
+            //Nossas Classes
+            boardManager = new BoardManager();
+            interfaceManager = new InterfaceManager(47, 10, 10, boardManager);
+            //
         }
 
         public override void LoadContent()
@@ -82,12 +90,8 @@ namespace KingsRun
         {
             if (input.IsNewMousePress())
             {
-                board.SetCellByPoint(input.CurrentMouseState.X-10, input.CurrentMouseState.Y-10);
-                int i = board.Column;
-                int j = board.Row;
-                string message = i + " , " + j;
-                //string message = input.CurrentMouseState.X + " , " + input.CurrentMouseState.Y;
-
+                Position click = interfaceManager.ScreenToBoard(input.CurrentMouseState.X, input.CurrentMouseState.Y);
+                string message = click.X +" , " + click.Y;
 
                 MessageBoxScreen coord = new MessageBoxScreen(message);
                 ScreenManager.AddScreen(coord, base.ControllingPlayer);

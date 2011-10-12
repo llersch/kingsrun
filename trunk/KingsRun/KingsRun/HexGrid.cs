@@ -7,9 +7,7 @@ namespace KingsRun
 {
     class HexGrid
     {
-        static int[] NEIGHBORS_DI = {0, 1, 1, 0, -1, -1};
-        static int[,] NEIGHBORS_DJ = { { -1, -1, 0, 1, 0, -1 }, { -1, 0, 1, 1, 1, 0 } };
-        static int NUM_NEIGHBORS = 6;
+        const int NUM_NEIGHBORS = 6;
 
         int[] CORNERS_DX;
         int[] CORNERS_DY;
@@ -21,12 +19,17 @@ namespace KingsRun
         int mI = 0;
         int mJ = 0;
 
+        int xoff = 0;
+        int yoff = 0;
+
         int RADIUS;
         int WIDTH;
         int HEIGHT;
 
-        public HexGrid(int a_radius)
+        public HexGrid(int a_radius, int _xoff, int _yoff)
         {
+            xoff = _xoff;
+            yoff = _yoff;
             RADIUS = a_radius;
             WIDTH = a_radius * 2;
             HEIGHT = (int)((float)a_radius * Math.Sqrt(3));
@@ -39,7 +42,6 @@ namespace KingsRun
             CORNERS_DY = cdy;
         }
 
-        
         public int Left
         {
             get { return mX; }
@@ -70,16 +72,6 @@ namespace KingsRun
             get { return mJ; }
         }
 
-        public int NeighborCol(int neighborIdx)
-        {
-            return mI + NEIGHBORS_DI[neighborIdx];
-        }
-
-        public int NeighborRow(int neightborIdx)
-        {
-            return mJ + NEIGHBORS_DJ[mI % 2, neightborIdx];
-        }
-
         public void ComputeCorners(int[] cornersX, int[] cornersY)
         {
             for (int k = 0; k < NUM_NEIGHBORS; k++)
@@ -89,16 +81,22 @@ namespace KingsRun
             }
         }
 
+        //Board ---> Screen
         public void SetCellIndex(int i, int j)
         {
             mI = i;
             mJ = j;
             mX = i * SIDE;
+            mX += xoff;
             mY = HEIGHT * (2*j+(i%2))/2;
+            mY += yoff;
         }
 
+        //Screen ---> Board
         public void SetCellByPoint(int x, int y)
         {
+            x -= xoff;
+            y -= yoff;
             int ci = (int)Math.Floor((float)x / (float)SIDE);
             int cx = x - SIDE * ci;
 
