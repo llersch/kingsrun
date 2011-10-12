@@ -25,6 +25,7 @@ namespace KingsRun
         private Position bestMove; // Melhor movimento a ser realizado pela peca acima
         private int deep = 2; // Profundidade de avaliacao
         private BoardManager board; // Tabuleiro do jogo
+        private int maxdeep = 2;
 
         #endregion
 
@@ -88,8 +89,11 @@ namespace KingsRun
                             if (moveScore >= bestMoveScore)
                             {
                                 bestMoveScore = moveScore;
-                                if (this.deep==2)
-                                 this.bestMove = move; //determina o movimento que gera mais pontos
+                                if (this.deep == this.maxdeep)
+                                { 
+                                    this.bestMove = move;
+                                    this.bestPiece = piece; //determina a peca que gera mais pontos
+                                } //determina o movimento que gera mais pontos
                             }
 
                             this.board.UndoMove();
@@ -97,12 +101,12 @@ namespace KingsRun
 
                         //possibleMoves = null;
 
-                        if (bestMoveScore >= bestPieceScore)
-                        {
-                            bestPieceScore = bestMoveScore;
+                     //   if (bestMoveScore >= bestPieceScore)
+                       // {
+                         //   bestPieceScore = bestMoveScore;
                             //if (this.deep==1)
-                                this.bestPiece = piece; //determina a peca que gera mais pontos
-                        }
+                           //     this.bestPiece = piece; //determina a peca que gera mais pontos
+                        //}
                     }
                 }
 
