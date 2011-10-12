@@ -24,7 +24,7 @@ namespace KingsRun
         InterfaceManager interfaceManager;
         //
 
-        bool IAturn=true;
+        bool IAturn=false;
 
         #endregion
 
@@ -117,17 +117,29 @@ namespace KingsRun
         //Handle inputs for this screen
         public override void HandleInput(InputState input)
         {
-            if (input.IsNewMousePress())
+            if (input.IsNewMousePress() && !IAturn)
             {
                 Position click = interfaceManager.ScreenToBoard(input.CurrentMouseState.X, input.CurrentMouseState.Y);
-                string message="aaa";
-                if (boardManager.isOccupied(click) && boardManager.isOnBoard(click))
+                Piece test;
+                test = boardManager.isOccupied(click);
+                if (test != null) //se clicou em uma casa com uma peça
                 {
-                    
-                    message = click.X + " , " + click.Y;
+                    if(boardManager.Player1.Contains(test)) //se essa peça é do player1 (humano)
+                    {
+                        interfaceManager.Selected = test; //a peça é selecionada
+                        interfaceManager.SelPossibleMvs = boardManager.PossibleMoves(interfaceManager.Selected); //calcula os movimentos possiveis
+                    }
+                }
+                else if (boardManager.isOnBoard(click)) //se clicou em uma casa sem peça, mas uma casa do tabuleiro
+                {
+                    if (interfaceManager.SelPossibleMvs.Contains(click)) //se clicou em uma casa de movimento possível
+                    {
+                        boardManager.MoveAndKill(interfaceManager.Selected, click);
+                        IAturn = true;
+                    }
                 }
 
-                MessageBoxScreen coord = new MessageBoxScreen(message);
+                MessageBoxScreen coord = new MessageBoxScreen(click.X + " , " + click.Y);
                 ScreenManager.AddScreen(coord, base.ControllingPlayer);
             }      
         }
