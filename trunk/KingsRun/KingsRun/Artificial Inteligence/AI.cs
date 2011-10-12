@@ -23,7 +23,7 @@ namespace KingsRun
 
         private Piece bestPiece; //Melhor peca a ser movimentada
         private Position bestMove; // Melhor movimento a ser realizado pela peca acima
-        private int deep = 1; // Profundidade de avaliacao
+        private int deep = 2; // Profundidade de avaliacao
         private BoardManager board; // Tabuleiro do jogo
 
         #endregion
@@ -59,44 +59,50 @@ namespace KingsRun
 
             foreach (Piece piece in myPieces)
             {
-//                Position bestPosition; //Melhor posicao para se jogar a peca "piece"
-                int bestMoveScore = bestPieceScore; //Melhor pontuacao atual
 
-                List<Position> possibleMoves = board.PossibleMoves(piece);
-
-                if (possibleMoves.Count != 0)
+                if (piece.Status == 0)
+                //Se a peca estiver viva, ele tenta realizar um movimento
                 {
-                    foreach (Position move in possibleMoves)
+                    int bestMoveScore = bestPieceScore; //Melhor pontuacao atual
+                    List<Position> possibleMoves = board.PossibleMoves(piece);
+
+                    if (possibleMoves.Count != 0)
+                    //Se a peca possuir algum movimento valido, tenta realizar o movimento
                     {
-                        int moveScore; //Armazena o melhor score possivel de se obter, movendo a peca "piece" na posicao "move";
-                        this.board.MoveAndKill(piece, move);
-
-                        if (deep == 0)
+                        foreach (Position move in possibleMoves)
                         {
-                            moveScore = this.evaluate(myPieces, opPieces);
+                            int moveScore; //Armazena o melhor score possivel de se obter, movendo a peca "piece" na posicao "move";
+                            this.board.MoveAndKill(piece, move);
+
+                            if (this.deep == 1)
+                            {
+                                moveScore = this.evaluate(myPieces, opPieces);
+                            }
+                            else
+                            {
+                                this.deep--;
+                                moveScore = this.next(opPieces, myPieces);
+                                this.deep++;
+                            }
+
+                            if (moveScore >= bestMoveScore)
+                            {
+                                bestMoveScore = moveScore;
+                                //if (this.deep==1)
+                                    this.bestMove = move; //determina o movimento que gera mais pontos
+                            }
+
+                            this.board.UndoMove();
                         }
-                        else
+
+                        //possibleMoves = null;
+
+                        if (bestMoveScore >= bestPieceScore)
                         {
-                            this.deep--;
-                            moveScore = this.next(opPieces, myPieces);
-                            this.deep++;
+                            bestPieceScore = bestMoveScore;
+                            //if (this.deep==1)
+                                this.bestPiece = piece; //determina a peca que gera mais pontos
                         }
-
-                        if (moveScore >= bestMoveScore)
-                        {
-                            bestMoveScore = moveScore;
-                            this.bestMove = move; //determina o movimento que gera mais pontos
-                        }
-
-                        this.board.UndoMove();
-                    }
-
-                    //destroy possibleMoves
-
-                    if (bestMoveScore >= bestPieceScore)
-                    {
-                        bestPieceScore = bestMoveScore;
-                        this.bestPiece = piece; //determina a peca que gera mais pontos
                     }
                 }
 
