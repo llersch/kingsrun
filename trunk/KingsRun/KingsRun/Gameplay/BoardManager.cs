@@ -40,8 +40,8 @@ namespace KingsRun
 
         int turn = 0;
 
-        List<Piece> player1 = new List<Piece>(10);
-        List<Piece> player2 = new List<Piece>(10);
+        List<Piece> player1 = new List<Piece>(10);  //peças do jogador
+        List<Piece> player2 = new List<Piece>(10);  //peças da IA
 
         Stack<Movement> moves = new Stack<Movement>();
 
@@ -147,7 +147,6 @@ namespace KingsRun
                     result.Add(current);
                     current = this.GetNeighbor(current, n);
                 }
-
             }
             return result;
         }
