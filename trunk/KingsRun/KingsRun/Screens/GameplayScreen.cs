@@ -29,17 +29,17 @@ namespace KingsRun
 
         #endregion
 
-        public GameplayScreen()
+        public GameplayScreen(bool _IAturn, int _depth)
         {
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
-            IAturn = false;
+            IAturn = _IAturn;
 
             //Nossas Classes
             boardManager = new BoardManager();
             interfaceManager = new InterfaceManager(47, 10, 10, boardManager);
-            ia = new AI(boardManager, 2); 
+            ia = new AI(boardManager, _depth); 
             //
         }
 
