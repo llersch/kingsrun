@@ -84,15 +84,17 @@ namespace KingsRun
         /// Update method wanting to transition off.
         /// </summary>
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
-                                                       bool coveredByOtherScreen)
+                                                               bool coveredByOtherScreen)
         {
             if (IAturn)
             {
                 ia.play();
                 IAturn = false;
+                IAturn = false;
             }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
+
 
 
         /// <summary>
