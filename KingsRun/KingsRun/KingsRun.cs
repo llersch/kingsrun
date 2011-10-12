@@ -36,7 +36,7 @@ namespace KingsRun
 
             screenManager = new ScreenManager(this);
             Components.Add(screenManager);
-            screenManager.AddScreen(new GameplayScreen(), null);
+            //screenManager.AddScreen(new GameplayScreen(), null);
             screenManager.AddScreen(new MainMenuScreen(), null);
         }
 

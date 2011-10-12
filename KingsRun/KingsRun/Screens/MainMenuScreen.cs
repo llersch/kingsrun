@@ -53,9 +53,8 @@ namespace KingsRun
         /// </summary>
         void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            //LoadingScreen.Load(ScreenManager, true, e.PlayerIndex,
-                               //new GameplayScreen());
-            ScreenManager.RemoveScreen(this);
+            ScreenManager.AddScreen(new GameplayScreen(), e.PlayerIndex);
+            //ScreenManager.RemoveScreen(this);
         }
 
 
