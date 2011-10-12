@@ -7,12 +7,13 @@ namespace KingsRun
 {
     class InterfaceManager
     {
-        HexGrid grid = new HexGrid(47);
-
-        public InterfaceManager(int _radius, int _xoff, int _yoff)
+        HexGrid grid;
+        BoardManager bmanager;
+        
+        public InterfaceManager(int _radius, int _xoff, int _yoff, BoardManager _bmanager)
         {
-
-
+            grid = new HexGrid(_radius);
+            bmanager = _bmanager;
         }
 
     }
