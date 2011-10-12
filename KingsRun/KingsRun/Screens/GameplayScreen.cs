@@ -14,6 +14,10 @@ namespace KingsRun
 
         ContentManager content;
         Texture2D backgroundTexture;
+        Texture2D blackking;
+        Texture2D blackpeon;
+        Texture2D whiteking;
+        Texture2D whitepeon;
 
         //Nossas Classes
         BoardManager boardManager;
@@ -41,6 +45,10 @@ namespace KingsRun
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             backgroundTexture = content.Load<Texture2D>("tabuleiro");
+            blackking = content.Load<Texture2D>("blackking");
+            blackpeon = content.Load<Texture2D>("blackpeon");
+            whiteking = content.Load<Texture2D>("whiteking");
+            whitepeon = content.Load<Texture2D>("whitepeon");
         }
 
 
@@ -82,6 +90,16 @@ namespace KingsRun
             spriteBatch.Begin();
             spriteBatch.Draw(backgroundTexture, fullscreen,
                              new Color(fade, fade, fade));
+            
+            //itera pelo Player1, mas desenha para os dois pq tem o mesmo tamanho
+            for (int i = 0; i < boardManager.Player1.Count - 1; i++)
+            {
+                spriteBatch.Draw(whitepeon, interfaceManager.PieceRect(boardManager.Player1[i]), Color.White);
+                spriteBatch.Draw(blackpeon, interfaceManager.PieceRect(boardManager.Player2[i]), Color.White);
+            }
+            spriteBatch.Draw(whiteking, interfaceManager.PieceRect(boardManager.Player1[9]), Color.White);
+            spriteBatch.Draw(blackking, interfaceManager.PieceRect(boardManager.Player2[9]), Color.White);
+
             spriteBatch.End();
         }
 
