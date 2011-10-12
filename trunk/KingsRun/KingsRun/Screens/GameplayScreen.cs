@@ -22,6 +22,7 @@ namespace KingsRun
         //Nossas Classes
         BoardManager boardManager;
         InterfaceManager interfaceManager;
+        AI ia;
         //
 
         bool IAturn=false;
@@ -36,6 +37,7 @@ namespace KingsRun
             //Nossas Classes
             boardManager = new BoardManager();
             interfaceManager = new InterfaceManager(47, 10, 10, boardManager);
+            ia = new AI(boardManager); 
             //
         }
 
@@ -84,6 +86,10 @@ namespace KingsRun
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                        bool coveredByOtherScreen)
         {
+            if (IAturn)
+            {
+                //ia.play();
+            }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
 
