@@ -98,7 +98,7 @@ namespace KingsRun
             }
             else if (boardManager.Player2[9].Status != 0) //rei da IA morreu
             {
-                MessageBoxScreen gameOverMessageBox = new MessageBoxScreen("GAME OVER  You won :-)");
+                MessageBoxScreen gameOverMessageBox = new MessageBoxScreen("GAME OVER  You won :-)", false);
                 gameOverMessageBox.Accepted += GameOverMessageBoxAccepted;
 
                 ScreenManager.AddScreen(gameOverMessageBox, ControllingPlayer);
