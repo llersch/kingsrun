@@ -89,6 +89,7 @@ namespace KingsRun
             if (IAturn)
             {
                 //ia.play();
+                IAturn = false;
             }
             base.Update(gameTime, otherScreenHasFocus, false);
         }
@@ -111,8 +112,11 @@ namespace KingsRun
             //itera pelo Player1, mas desenha para os dois pq tem o mesmo tamanho
             for (int i = 0; i < boardManager.Player1.Count - 1; i++)
             {
-                spriteBatch.Draw(playerPeon, interfaceManager.PieceRect(boardManager.Player1[i]), Color.White);
-                spriteBatch.Draw(IApeon, interfaceManager.PieceRect(boardManager.Player2[i]), Color.White);
+                if(boardManager.Player1[i].Status == 0)
+                    spriteBatch.Draw(playerPeon, interfaceManager.PieceRect(boardManager.Player1[i]), Color.White);
+
+                if (boardManager.Player2[i].Status == 0)
+                    spriteBatch.Draw(IApeon, interfaceManager.PieceRect(boardManager.Player2[i]), Color.White);
             }
             spriteBatch.Draw(playerKing, interfaceManager.PieceRect(boardManager.Player1[9]), Color.White);
             spriteBatch.Draw(IAking, interfaceManager.PieceRect(boardManager.Player2[9]), Color.White);
