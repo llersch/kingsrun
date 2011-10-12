@@ -23,8 +23,8 @@ namespace KingsRun
 
         private Piece bestPiece; //Melhor peca a ser movimentada
         private Position bestMove; // Melhor movimento a ser realizado pela peca acima
-        private int maxdeep = 3; // Profundidade de avaliacao
-        private int deep = 3; // Profundidade de avaliacao
+        private int maxdeep = 2; // Profundidade de avaliacao
+        private int deep = 2; // Profundidade de avaliacao
         private BoardManager board; // Tabuleiro do jogo
         
 
@@ -101,14 +101,6 @@ namespace KingsRun
                             this.board.UndoMove();
                         }
 
-                        //possibleMoves = null;
-
-                     //   if (bestMoveScore >= bestPieceScore)
-                       // {
-                         //   bestPieceScore = bestMoveScore;
-                            //if (this.deep==1)
-                           //     this.bestPiece = piece; //determina a peca que gera mais pontos
-                        //}
                     }
                 }
 
