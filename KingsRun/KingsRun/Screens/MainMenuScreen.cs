@@ -10,6 +10,7 @@
 #region Using Statements
 using System;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 #endregion
 
@@ -20,6 +21,8 @@ namespace KingsRun
     /// </summary>
     class MainMenuScreen : MenuScreen
     {
+        #region Fields
+
         static string[] colors = {"White", "Black"};
         static int currentColor = 0;
         static int depth = 1;
@@ -29,8 +32,12 @@ namespace KingsRun
         MenuEntry depthMenuEntry;
         MenuEntry exitMenuEntry;
 
-        #region Initialization
+        ContentManager content;
+        Texture2D backgroundTexture;
 
+        #endregion
+
+        #region Initialization
 
         /// <summary>
         /// Constructor fills in the menu contents.
@@ -57,6 +64,20 @@ namespace KingsRun
             MenuEntries.Add(colorMenuEntry);
             MenuEntries.Add(depthMenuEntry);
             MenuEntries.Add(exitMenuEntry);
+
+        }
+
+        public override void LoadContent()
+        {
+            if (content == null)
+                content = new ContentManager(ScreenManager.Game.Services, "Content");
+
+            backgroundTexture = content.Load<Texture2D>("chess_piece");
+        }
+
+        public override void UnloadContent()
+        {
+            content.Unload();
         }
 
         #endregion
@@ -129,23 +150,17 @@ namespace KingsRun
 
         public override void  Draw(GameTime gameTime)
         {
-            
-            /*SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
+            SpriteBatch spriteBatch = ScreenManager.SpriteBatch;
             Viewport viewport = ScreenManager.GraphicsDevice.Viewport;
-
-            //Creates a solid color texture to draw the menu background rectangle.
-            Texture2D rectangleTexture = new Texture2D(ScreenManager.GraphicsDevice, 1, 1, true, SurfaceFormat.Color);
-            Color[] color = new Color[1];
-            color[0] = new Color(61, 61, 61, 200);
-            rectangleTexture.SetData(color);
 
             //Creates the rectangle
             Rectangle fullscreen = new Rectangle(0, 0, viewport.Width, viewport.Height);
 
             //Draw the rectangle
             spriteBatch.Begin();
-            spriteBatch.Draw(rectangleTexture, fullscreen, Color.White);
-            spriteBatch.End();*/
+            spriteBatch.Draw(backgroundTexture, fullscreen, Color.White);
+            spriteBatch.End();
+
             ScreenManager.FadeBackBufferToBlack(TransitionAlpha * 2 / 3);
 
             base.Draw(gameTime);

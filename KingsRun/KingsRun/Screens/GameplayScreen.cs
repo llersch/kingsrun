@@ -90,11 +90,20 @@ namespace KingsRun
         {
             if (boardManager.Player1[9].Status != 0) //rei do jogador morreu
             {
-                ScreenManager.Game.Exit();
+                MessageBoxScreen gameOverMessageBox = new MessageBoxScreen("GAME OVER \n You lost :-(", false);
+                gameOverMessageBox.Accepted += GameOverMessageBoxAccepted;
+
+                ScreenManager.AddScreen(gameOverMessageBox, ControllingPlayer);
+                boardManager.Player1[9].Status = 0; //ta usando isso aqui pra ñ ficar repetindo o loop... tem q descobrir como fazer isso certo
             }
             else if (boardManager.Player2[9].Status != 0) //rei da IA morreu
             {
-                ScreenManager.Game.Exit();
+                MessageBoxScreen gameOverMessageBox = new MessageBoxScreen("GAME OVER  You won :-)");
+                gameOverMessageBox.Accepted += GameOverMessageBoxAccepted;
+
+                ScreenManager.AddScreen(gameOverMessageBox, ControllingPlayer);
+                boardManager.Player2[9].Status = 0; //ta usando isso aqui pra ñ ficar repetindo o loop... tem q descobrir como fazer isso certo
+                return;
             }
 
             else if (IAturn)
@@ -180,5 +189,12 @@ namespace KingsRun
         }
 
         #endregion
+
+        void GameOverMessageBoxAccepted(object sender, PlayerIndexEventArgs e)
+        {
+            //Vai desempilhar a MessageBox e a GameplayScreen (tem que fazer isso de um jeito mais elegante)
+            ScreenManager.RemoveScreen(ScreenManager.GetScreens()[2]);
+            ScreenManager.RemoveScreen(ScreenManager.GetScreens()[1]);
+        }
     }
 }
