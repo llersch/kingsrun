@@ -86,7 +86,16 @@ namespace KingsRun
         public override void Update(GameTime gameTime, bool otherScreenHasFocus,
                                                                bool coveredByOtherScreen)
         {
-            if (IAturn)
+            if (boardManager.Player1[9].Status != 0) //rei do jogador morreu
+            {
+                ScreenManager.Game.Exit();
+            }
+            else if (boardManager.Player2[9].Status != 0) //rei da IA morreu
+            {
+                ScreenManager.Game.Exit();
+            }
+
+            else if (IAturn)
             {
                 ia.play();
                 IAturn = false;
@@ -119,6 +128,7 @@ namespace KingsRun
                 if (boardManager.Player2[i].Status == 0)
                     spriteBatch.Draw(IApeon, interfaceManager.PieceRect(boardManager.Player2[i]), Color.White);
             }
+            
             spriteBatch.Draw(playerKing, interfaceManager.PieceRect(boardManager.Player1[9]), Color.White);
             spriteBatch.Draw(IAking, interfaceManager.PieceRect(boardManager.Player2[9]), Color.White);
 
