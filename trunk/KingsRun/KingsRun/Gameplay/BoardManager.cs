@@ -142,7 +142,7 @@ namespace KingsRun
             foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
             {
                 current = this.GetNeighbor(_piece.Position, n);
-                while (this.isOnBoard(current) && !this.isOccupied(current))
+                while (this.isOnBoard(current) && this.isOccupied(current)==null)
                 {
                     result.Add(current);
                     current = this.GetNeighbor(current, n);
@@ -153,7 +153,7 @@ namespace KingsRun
         }
 
         //Verifica se uma determinada posição está ocupada.
-        public bool isOccupied(Position _position)
+        public Piece isOccupied(Position _position)
         {
             // Talvez mudar pro metodo Compare
             foreach (Piece piece in player1)
@@ -161,7 +161,7 @@ namespace KingsRun
                 if (piece.Position.X == _position.X &&
                     piece.Position.Y == _position.Y &&
                     piece.Status == 0)
-                    return true;
+                    return piece;
             }
 
             foreach (Piece piece in player2)
@@ -169,10 +169,10 @@ namespace KingsRun
                 if (piece.Position.X == _position.X &&
                     piece.Position.Y == _position.Y &&
                     piece.Status == 0)
-                    return true;
+                    return piece;
             }
 
-            return false;
+            return null;
         }
 
         //Verifica se uma determinada posição está no tabuleiro.

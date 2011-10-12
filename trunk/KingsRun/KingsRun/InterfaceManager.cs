@@ -11,6 +11,7 @@ namespace KingsRun
         HexGrid grid;
         BoardManager bManager;
         Piece selected;
+        List<Position> selPossibleMvs;
         
         public InterfaceManager(int _radius, int _xoff, int _yoff, BoardManager _bmanager)
         {
@@ -22,6 +23,12 @@ namespace KingsRun
         {
             get { return selected; }
             set { selected = value; }
+        }
+
+        public List<Position> SelPossibleMvs
+        {
+            get { return selPossibleMvs; }
+            set { selPossibleMvs = value; }
         }
 
         public Position ScreenToBoard(int x, int y)
