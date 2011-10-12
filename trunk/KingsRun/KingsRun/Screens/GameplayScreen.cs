@@ -90,7 +90,6 @@ namespace KingsRun
             {
                 ia.play();
                 IAturn = false;
-                IAturn = false;
             }
             base.Update(gameTime, otherScreenHasFocus, false);
         }

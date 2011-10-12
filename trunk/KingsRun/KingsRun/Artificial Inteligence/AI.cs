@@ -23,7 +23,7 @@ namespace KingsRun
 
         private Piece bestPiece; //Melhor peca a ser movimentada
         private Position bestMove; // Melhor movimento a ser realizado pela peca acima
-        private int deep = 2; // Profundidade de avaliacao
+        private int deep = 1; // Profundidade de avaliacao
         private BoardManager board; // Tabuleiro do jogo
 
         #endregion

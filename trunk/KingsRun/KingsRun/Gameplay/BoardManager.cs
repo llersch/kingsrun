@@ -215,7 +215,7 @@ namespace KingsRun
             {
                 foreach (Piece p in player2)
                 {
-                    if (p.Position.Equals(_position))
+                    if (p.Position.Equals(_position) && p.Status==0)
                         return p;
                 }
 
@@ -224,7 +224,7 @@ namespace KingsRun
             {
                 foreach (Piece p in player1)
                 {
-                    if (p.Position.Equals(_position))
+                    if (p.Position.Equals(_position) && p.Status==0)
                         return p;
                 }
             }
