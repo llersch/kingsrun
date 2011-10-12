@@ -14,17 +14,17 @@ namespace KingsRun
 
         ContentManager content;
         Texture2D backgroundTexture;
-        Texture2D blackking;
-        Texture2D blackpeon;
-        Texture2D whiteking;
-        Texture2D whitepeon;
+        Texture2D IApeon;
+        Texture2D IAking;
+        Texture2D playerPeon;
+        Texture2D playerKing;
 
         //Nossas Classes
         BoardManager boardManager;
         InterfaceManager interfaceManager;
         //
 
-        bool IAturn;
+        bool IAturn=true;
 
         #endregion
 
@@ -45,10 +45,21 @@ namespace KingsRun
                 content = new ContentManager(ScreenManager.Game.Services, "Content");
 
             backgroundTexture = content.Load<Texture2D>("tabuleiro");
-            blackking = content.Load<Texture2D>("blackking");
-            blackpeon = content.Load<Texture2D>("blackpeon");
-            whiteking = content.Load<Texture2D>("whiteking");
-            whitepeon = content.Load<Texture2D>("whitepeon");
+
+            if (IAturn) //se IA começa jogando
+            {
+                IApeon = content.Load<Texture2D>("whitepeon");
+                IAking = content.Load<Texture2D>("whiteking");
+                playerPeon = content.Load<Texture2D>("blackpeon");
+                playerKing = content.Load<Texture2D>("blackking");
+            }
+            else //se player começa jogando
+            {
+                IApeon = content.Load<Texture2D>("blackpeon");
+                IAking = content.Load<Texture2D>("blackking");
+                playerPeon = content.Load<Texture2D>("whitepeon");
+                playerKing = content.Load<Texture2D>("whiteking");
+            }
         }
 
 
@@ -94,11 +105,11 @@ namespace KingsRun
             //itera pelo Player1, mas desenha para os dois pq tem o mesmo tamanho
             for (int i = 0; i < boardManager.Player1.Count - 1; i++)
             {
-                spriteBatch.Draw(whitepeon, interfaceManager.PieceRect(boardManager.Player1[i]), Color.White);
-                spriteBatch.Draw(blackpeon, interfaceManager.PieceRect(boardManager.Player2[i]), Color.White);
+                spriteBatch.Draw(playerPeon, interfaceManager.PieceRect(boardManager.Player1[i]), Color.White);
+                spriteBatch.Draw(IApeon, interfaceManager.PieceRect(boardManager.Player2[i]), Color.White);
             }
-            spriteBatch.Draw(whiteking, interfaceManager.PieceRect(boardManager.Player1[9]), Color.White);
-            spriteBatch.Draw(blackking, interfaceManager.PieceRect(boardManager.Player2[9]), Color.White);
+            spriteBatch.Draw(playerKing, interfaceManager.PieceRect(boardManager.Player1[9]), Color.White);
+            spriteBatch.Draw(IAking, interfaceManager.PieceRect(boardManager.Player2[9]), Color.White);
 
             spriteBatch.End();
         }
@@ -109,7 +120,12 @@ namespace KingsRun
             if (input.IsNewMousePress())
             {
                 Position click = interfaceManager.ScreenToBoard(input.CurrentMouseState.X, input.CurrentMouseState.Y);
-                string message = click.X +" , " + click.Y;
+                string message="aaa";
+                if (boardManager.isOccupied(click) && boardManager.isOnBoard(click))
+                {
+                    
+                    message = click.X + " , " + click.Y;
+                }
 
                 MessageBoxScreen coord = new MessageBoxScreen(message);
                 ScreenManager.AddScreen(coord, base.ControllingPlayer);
