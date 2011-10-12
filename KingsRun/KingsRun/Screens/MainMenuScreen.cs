@@ -20,6 +20,15 @@ namespace KingsRun
     /// </summary>
     class MainMenuScreen : MenuScreen
     {
+        static string[] colors = {"White", "Black"};
+        static int currentColor = 0;
+        static int depth = 1;
+
+        MenuEntry playGameMenuEntry;
+        MenuEntry colorMenuEntry;
+        MenuEntry depthMenuEntry;
+        MenuEntry exitMenuEntry;
+
         #region Initialization
 
 
@@ -30,20 +39,36 @@ namespace KingsRun
             : base("King's Run")
         {
             // Create our menu entries.
-            MenuEntry playGameMenuEntry = new MenuEntry("Play Game");
-            MenuEntry exitMenuEntry = new MenuEntry("Exit");
+            playGameMenuEntry = new MenuEntry(string.Empty);
+            colorMenuEntry = new MenuEntry(string.Empty);
+            depthMenuEntry = new MenuEntry(string.Empty);
+            exitMenuEntry = new MenuEntry(string.Empty);
+
+            SetMenuEntryText();
 
             // Hook up menu event handlers.
             playGameMenuEntry.Selected += PlayGameMenuEntrySelected;
-            exitMenuEntry.Selected += OnCancel;
+            colorMenuEntry.Selected += ColorMenuEntrySelected;
+            depthMenuEntry.Selected += DepthMenuEntrySelected;
+            exitMenuEntry.Selected += ExitMenuEntrySelected;
 
             // Add entries to the menu.
             MenuEntries.Add(playGameMenuEntry);
+            MenuEntries.Add(colorMenuEntry);
+            MenuEntries.Add(depthMenuEntry);
             MenuEntries.Add(exitMenuEntry);
         }
 
-
         #endregion
+
+        void SetMenuEntryText()
+        {
+
+            playGameMenuEntry.Text = "Play Game";
+            colorMenuEntry.Text = "Color: " + colors[currentColor];
+            depthMenuEntry.Text = "Depth: " + depth;
+            exitMenuEntry.Text = "Exit";
+        }
 
         #region Handle Input
 
@@ -53,8 +78,25 @@ namespace KingsRun
         /// </summary>
         void PlayGameMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            ScreenManager.AddScreen(new GameplayScreen(), e.PlayerIndex);
+            ScreenManager.AddScreen(new GameplayScreen(Convert.ToBoolean(currentColor) ,depth), e.PlayerIndex);
             //ScreenManager.RemoveScreen(this);
+        }
+
+        void ColorMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            currentColor = (currentColor + 1) % colors.Length;
+            SetMenuEntryText();
+        }
+
+        void DepthMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            depth = (depth % 3) + 1;
+            SetMenuEntryText();
+        }
+
+        void ExitMenuEntrySelected(object sender, PlayerIndexEventArgs e)
+        {
+            ScreenManager.Game.Exit();
         }
 
 
