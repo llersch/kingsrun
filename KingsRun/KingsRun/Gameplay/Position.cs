@@ -27,5 +27,22 @@ namespace KingsRun
             get { return y; }
             set { y = value; }
         }
+
+        public override bool Equals(object obj)
+        {
+            if (obj == null) return false;
+
+            if (this.GetType() != obj.GetType()) return false;
+
+            Position pos = (Position) obj;
+
+            if (!Object.Equals(this.X, pos.X)) return false;
+            if (!Object.Equals(this.Y, pos.Y)) return false;
+
+            if (!this.X.Equals(pos.X)) return false;
+            if (!this.Y.Equals(pos.Y)) return false;
+
+            return true;
+        }
     }
 }

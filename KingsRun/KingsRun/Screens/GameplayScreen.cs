@@ -111,6 +111,15 @@ namespace KingsRun
             spriteBatch.Draw(playerKing, interfaceManager.PieceRect(boardManager.Player1[9]), Color.White);
             spriteBatch.Draw(IAking, interfaceManager.PieceRect(boardManager.Player2[9]), Color.White);
 
+            //Se existir uma peça selecionada, desenha ela em amarelo
+            if (interfaceManager.Selected != null)
+            {
+                if (interfaceManager.Selected.Equals(boardManager.Player1[9]))
+                    spriteBatch.Draw(playerKing, interfaceManager.PieceRect(interfaceManager.Selected), Color.Yellow);
+                else
+                    spriteBatch.Draw(playerPeon, interfaceManager.PieceRect(interfaceManager.Selected), Color.Yellow);
+            }
+
             spriteBatch.End();
         }
 
@@ -130,17 +139,20 @@ namespace KingsRun
                         interfaceManager.SelPossibleMvs = boardManager.PossibleMoves(interfaceManager.Selected); //calcula os movimentos possiveis
                     }
                 }
-                else if (boardManager.isOnBoard(click)) //se clicou em uma casa sem peça, mas uma casa do tabuleiro
+                else if (interfaceManager.Selected != null) //se existe uma peça selecionada
                 {
-                    if (interfaceManager.SelPossibleMvs.Contains(click)) //se clicou em uma casa de movimento possível
+                    if (interfaceManager.SelPossibleMvs.Contains(click)) //se a casa onde clicou é um movimento possível
                     {
                         boardManager.MoveAndKill(interfaceManager.Selected, click);
                         IAturn = true;
+
+                        interfaceManager.Selected = null;
+                        interfaceManager.SelPossibleMvs.Clear();
                     }
                 }
 
-                MessageBoxScreen coord = new MessageBoxScreen(click.X + " , " + click.Y);
-                ScreenManager.AddScreen(coord, base.ControllingPlayer);
+                //MessageBoxScreen coord = new MessageBoxScreen(click.X + " , " + click.Y);
+                //ScreenManager.AddScreen(coord, base.ControllingPlayer);
             }      
         }
 
