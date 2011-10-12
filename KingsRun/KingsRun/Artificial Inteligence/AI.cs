@@ -10,6 +10,12 @@ namespace KingsRun
         #region Const Fields
 
         const int MINVALUE = -10000;
+        
+        /* Pesos da funcao de avaliacao */
+        const int PESO_PECA_INIMIGA = 2;
+        const int PESO_PECA_AMIGA = 3;
+        const int PESO_REI_AMIGO = 100;
+        const int PESO_REI_INIMIGO = 100;
 
         #endregion
 
@@ -105,14 +111,24 @@ namespace KingsRun
             foreach (Piece piece in myPieces)
             {
                 if (piece.Status > 0)
-                    score = score - 3;
+                    score = score - PESO_PECA_INIMIGA;
+                    //score = score - 3;
             }
+
+            // verifica se o rei amigo não está ameaçado
+            if (myPieces[9].Status > 0)
+                score = score - PESO_REI_AMIGO;
 
             foreach (Piece piece in opPieces)
             {
                 if (piece.Status > 0)
-                    score = score + 2;
+                    score = score + PESO_PECA_AMIGA;
+                    //score = score + 2;
             }
+
+            // verifica se o rei inimigo pode ser vencido
+            if (opPieces[9].Status > 0)
+                score = score + PESO_REI_INIMIGO;
 
             return (score);
         }
