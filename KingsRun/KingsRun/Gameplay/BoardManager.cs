@@ -38,82 +38,125 @@ namespace KingsRun.Gameplay
 
         #region Fields
 
+        int turn = 0;
+
         List<Piece> player1 = new List<Piece>(10);
         List<Piece> player2 = new List<Piece>(10);
 
+        Stack<Movement> moves = new Stack<Movement>();
+
         #endregion
 
-        // Moves the pieces
-        public bool MoveAndKill(Piece piece, Tuple<int, int> toPosition)
+        #region Properties
+
+        public List<Piece> Player1
         {
-            return true;
+            get { return player1; }
         }
 
-        public bool Move(Piece piece, Tuple<int,int> toPosition)
+        public List<Piece> Player2
         {
-            return true;
+            get { return player2; }
         }
 
-        private void Kill(Piece piece)
-        {
-            //piece.Status = turn;
-        }
+        #endregion
 
-        public bool UndoMove()
-        {
-            return true;
-        }
+        #region Public Methods
 
-        //REVER TODA ESTA MERDA!
-        /*public List<Tuple<byte,byte>> PossibleMoves(Piece piece)
+        // Método recebe uma _piece e a _toPosition de destino.
+        public void MoveAndKill(Piece _piece, Position _toPosition)
         {
-            List<Tuple<int, int>> result = new List<Tuple<int,int>>();
-
-            foreach (int direction in Enum.GetValues(typeof(Neighbors)))
+            this.Move(_piece, _toPosition);
+            Piece enemy;
+            foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
             {
-                // TODO: AQUI TEM ALGUMA COISA POSSIVELMENTE MUITO ERRADA!! (ATRIBUIÇÃO POR VALOR OU REFERENCIA?)
-                Tuple<byte,byte> aux = piece.Position;
-
-                aux = GetNeighbor(aux, direction);
-
-                while (isOnBoard(GetNeighbor(aux, direction)) && !isOccupied(aux))
+                enemy = this.isEnemyAt(_piece, this.GetNeighbor(_piece.Position, n));
+                if (enemy != null)
                 {
-                    return result;                    
+                    if(this.mustDie(enemy))
+                    {
+                        this.Kill(enemy);
+                    } 
                 }
             }
-        }*/
+            turn++;
+        }
 
-        private bool isOccupied(Tuple<int, int> position)
+        public void UndoMove()
         {
-            bool occupied = false;
+            if (turn > 0)
+            {
+                turn--;
 
+                Movement aMovement = moves.Pop();
+                aMovement.Piece.Position.X = aMovement.SPosition.X;
+                aMovement.Piece.Position.Y = aMovement.SPosition.Y;
+
+                foreach (Piece piece in player1)
+                {
+                    if (piece.Status == turn)
+                        piece.Status = 0;
+                }
+
+                foreach (Piece piece in player2)
+                {
+                    if (piece.Status == turn)
+                        piece.Status = 0;
+                }
+            }
+        }
+
+        //Retorna lista de posições para as quais _piece poderá mover.
+        public List<Position> PossibleMoves(Piece _piece)
+        {
+            List<Position> result = new List<Position>();
+            Position current;
+
+            foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
+            {
+                current = this.GetNeighbor(_piece.Position, n);
+                while (this.isOnBoard(current) && !this.isOccupied(current))
+                {
+                    result.Add(current);
+                    current = this.GetNeighbor(current, n);
+                }
+
+            }
+            return result;
+        }
+
+        //Verifica se uma determinada posição está ocupada.
+        public bool isOccupied(Position _position)
+        {
+            // Talvez mudar pro metodo Compare
             foreach (Piece piece in player1)
             {
-                if (piece.X == position.Item1 &&
-                    piece.Y == position.Item2 &&
+                if (piece.Position.X == _position.X &&
+                    piece.Position.Y == _position.Y &&
                     piece.Status == 0)
-                    occupied = true;
+                    return true;
             }
 
             foreach (Piece piece in player2)
             {
-                if (piece.X == position.Item1 &&
-                    piece.Y == position.Item2 &&
+                if (piece.Position.X == _position.X &&
+                    piece.Position.Y == _position.Y &&
                     piece.Status == 0)
-                    occupied = true;
+                    return true;
             }
 
-            return occupied;
+            return false;
         }
 
-        public bool isOnBoard(Piece a_piece)
+        //Verifica se uma determinada posição está no tabuleiro.
+        public bool isOnBoard(Position _position)
         {
-            if (a_piece.X < 0 || a_piece.X >= 9 || a_piece.Y < 0 || a_piece.Y >= 9)
+            if (_position.X < 0 || _position.X >= 9 || _position.Y < 0 || _position.Y >= 9)
             {
                 return false;
             }
 
-            if (boardCells[a_piece.X, a_piece.Y] == OUT)
+            if (boardCells[_position.X, _position.Y] == OUT)
             {
                 return false;
             }
@@ -121,26 +164,69 @@ namespace KingsRun.Gameplay
             return true;
         }
 
-        public Tuple<int, int> GetNeighbor(Piece a_piece, Neighbors a_neighbor)
+        #endregion
+
+        #region Private Methods
+
+        private void Move(Piece _piece, Position _toPosition)
         {
-            return new Tuple<int, int>(a_piece.X + neighborsCol[(int)a_neighbor], a_piece.Y + neighborsRow[a_piece.X % 2, (int)a_neighbor]);
+            Movement mv = new Movement(_piece);
+            moves.Push(mv);
+
+            _piece.Position.X = _toPosition.X;
+            _piece.Position.Y = _toPosition.Y;
         }
+
+        private void Kill(Piece _piece)
+        {
+            _piece.Status = turn;
+        }
+
+        //Verifica se existe um inimigo de _piece em _position, retornando um ponteiro para o inimigo.
+        private Piece isEnemyAt(Piece _piece, Position _position)
+        {
+            if (player1.Contains(_piece))
+            {
+                foreach (Piece p in player2)
+                {
+                    if (p.Position.Equals(_position))
+                        return p;
+                }
+
+            }
+            else
+            {
+                foreach (Piece p in player1)
+                {
+                    if (p.Position.Equals(_position))
+                        return p;
+                }
+            }
+            return null;
+        }
+
+        //Verifica se a _piece deve morrer.
+        private bool mustDie(Piece _piece)
+        {
+            int num_enemies = 0;
+            foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
+            {
+                if (this.isEnemyAt(_piece, this.GetNeighbor(_piece.Position, n)) != null)
+                {
+                    num_enemies++;
+                    if (num_enemies >= 2)
+                        return true;
+                }
+            }
+            return false;
+        }
+
+        //Retorna a posição da casa vizinha de _position.
+        private Position GetNeighbor(Position _position, Neighbors _neighbor)
+        {
+            return new Position(_position.X + neighborsCol[(int)_neighbor], _position.Y + neighborsRow[_position.X % 2, (int)_neighbor]);
+        }
+
+        #endregion
     }
 }
-
-/* ISSO AQUI PODE SER UTIL NO FUTURO!!! SÓ QUE AO CONTRÁRIO!
-    bool esta_no_tabuleiro(Position pos)
-    {
-        if (!((Math.Abs(pos.column - 4) & 1) == (pos.row & 1))) // verifica se a paridade da célula
-            return false;                           // é igual à paridade da célula original
-
-        if (pos.column > 8)
-            return false;
-
-        if (pos.row >= Math.Abs(pos.column - 4))	// 
-            if (pos.row <= (-(Math.Abs(pos.column - 4) + 9)))
-                return true;
-
-        return false;
-    }
-*/
