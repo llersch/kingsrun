@@ -10,11 +10,18 @@ namespace KingsRun
     {
         HexGrid grid;
         BoardManager bManager;
+        Piece selected;
         
         public InterfaceManager(int _radius, int _xoff, int _yoff, BoardManager _bmanager)
         {
             grid = new HexGrid(_radius, _xoff, _yoff);
             bManager = _bmanager;
+        }
+
+        public Piece Selected
+        {
+            get { return selected; }
+            set { selected = value; }
         }
 
         public Position ScreenToBoard(int x, int y)

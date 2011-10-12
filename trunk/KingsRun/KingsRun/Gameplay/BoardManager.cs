@@ -183,7 +183,7 @@ namespace KingsRun
                 return false;
             }
 
-            if (boardCells[_position.X, _position.Y] == OUT)
+            if (boardCells[_position.Y, _position.X] == OUT)
             {
                 return false;
             }
