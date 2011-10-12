@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace KingsRun.Gameplay
+namespace KingsRun
 {
     //Used to know what neighbor I'm trying to access in some parts of the code
         public enum Neighbors
