@@ -94,18 +94,24 @@ namespace KingsRun
         public void MoveAndKill(Piece _piece, Position _toPosition)
         {
             this.Move(_piece, _toPosition);
-            Piece enemy;
-            foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
+
+            if (_piece != player1[9] && _piece != player2[9])
             {
-                enemy = this.isEnemyAt(_piece, this.GetNeighbor(_piece.Position, n));
-                if (enemy != null)
+                Piece enemy;
+                foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
                 {
-                    if(this.mustDie(enemy))
+                    enemy = this.isEnemyAt(_piece, this.GetNeighbor(_piece.Position, n));
+                    if (enemy != null)
                     {
-                        this.Kill(enemy);
-                    } 
+                        if (this.mustDie(enemy))
+                        {
+                            this.Kill(enemy);
+                        }
+                    }
                 }
             }
+
+
             turn++;
         }
 
@@ -242,9 +248,11 @@ namespace KingsRun
         private bool mustDie(Piece _piece)
         {
             int num_enemies = 0;
+            Piece aPiece;
             foreach (Neighbors n in Enum.GetValues(typeof(Neighbors)))
             {
-                if (this.isEnemyAt(_piece, this.GetNeighbor(_piece.Position, n)) != null)
+                aPiece = this.isEnemyAt(_piece, this.GetNeighbor(_piece.Position, n));
+                if (aPiece != null && aPiece != player1[9] && aPiece != player2[9])
                 {
                     num_enemies++;
                     if (num_enemies >= 2)
