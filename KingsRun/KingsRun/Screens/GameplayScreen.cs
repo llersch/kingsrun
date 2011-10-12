@@ -37,7 +37,7 @@ namespace KingsRun
             //Nossas Classes
             boardManager = new BoardManager();
             interfaceManager = new InterfaceManager(47, 10, 10, boardManager);
-            ia = new AI(boardManager); 
+            ia = new AI(boardManager,2); 
             //
         }
 

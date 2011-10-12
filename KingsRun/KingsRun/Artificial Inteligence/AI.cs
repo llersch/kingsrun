@@ -32,11 +32,14 @@ namespace KingsRun
 
         #region Public Methods
         
-        public AI(BoardManager aBoard)
+        public AI(BoardManager aBoard, int aDeep)
         //construtor da classe
         {
             this.board = aBoard;
+            this.deep = aDeep;
+            this.maxdeep = aDeep;
         }
+
 
         public void play()
         //realiza a jogada da IA
