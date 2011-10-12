@@ -7,12 +7,31 @@ namespace KingsRun
 {
     class AI
     {
-        const int MINVALUE = -10000;
-        private Piece bestPiece;
-        private Position bestMove;
-        private int deep = 5;
-        private BoardManager board;
+        #region Const Fields
 
+
+        const int MINVALUE = -10000;
+
+
+        #endregion
+
+        #region Private Fields
+
+
+
+        private Piece bestPiece; //Melhor peca a ser movimentada
+        private Position bestMove; // Melhor movimento a ser realizado pela peca acima
+        private int deep = 5; // Profundidade de avaliacao
+        private BoardManager board; // Tabuleiro do jogo
+
+
+
+        #endregion
+
+        #region Public Methods
+        
+        
+        
         public AI(BoardManager aBoard)
         //construtor da classe
         {
@@ -28,9 +47,16 @@ namespace KingsRun
             this.bestMove = null;
 
 
-            this.next(this.board.Player2, this.board.Player1);
-            this.board.MoveAndKill(this.bestPiece, this.bestMove);
+            this.next(this.board.Player2, this.board.Player1); //Determina a melhor peca/jogada a ser realizada
+            this.board.MoveAndKill(this.bestPiece, this.bestMove); //Realiza o movimento
         }
+
+
+
+        #endregion
+
+        #region Private Methods
+
 
 
         private int next(List<Piece> myPieces, List<Piece> opPieces)
@@ -42,13 +68,13 @@ namespace KingsRun
             foreach (Piece piece in myPieces)
             {
 //                Position bestPosition; //Melhor posicao para se jogar a peca "piece"
-                int bestMoveScore = bestPieceScore; //Melhor pontuacao com a peca "Piece"
+                int bestMoveScore = bestPieceScore; //Melhor pontuacao atual
 
                 List<Position> possibleMoves = board.PossibleMoves(piece);
 
                 foreach (Position move in possibleMoves)
                 {
-                    int moveScore;
+                    int moveScore; //Armazena o melhor score possivel de se obter, movendo a peca "piece" na posicao "move";
                     this.board.MoveAndKill(piece, move);
 
                     if (deep == 0)
@@ -106,5 +132,8 @@ namespace KingsRun
             return (score);
         }
 
+
+
+        #endregion
     }
 }
