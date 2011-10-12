@@ -5,7 +5,7 @@ using System.Text;
 
 namespace KingsRun
 {
-    /*Used to know what neighbor I'm trying to access in some parts of the code*/
+    //Used to know what neighbor I'm trying to access in some parts of the code
         public enum Neighbors
     { N = 0, NE, SE, S, SW, NW }
 
@@ -18,18 +18,18 @@ namespace KingsRun
         const bool IN = true;
         const bool OUT = false;
 
-        /* Matrix that says if some cell is in the board */
+        // Matrix that says if some cell is in the board
         readonly bool[,] boardCells = {{OUT,OUT,OUT,IN ,IN ,IN ,OUT,OUT,OUT},
-                                       {OUT,IN ,IN ,IN ,IN ,IN ,IN ,IN ,OUT},
-                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
-                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
-                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
-                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
-                                       {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
-                                       {OUT,OUT,IN ,IN ,IN ,IN ,IN ,OUT,OUT},
-                                       {OUT,OUT,OUT,OUT,IN ,OUT,OUT,OUT,OUT}};
+                                      {OUT,IN ,IN ,IN ,IN ,IN ,IN ,IN ,OUT},
+                                      {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
+                                      {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
+                                      {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
+                                      {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
+                                      {IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN ,IN },
+                                      {OUT,OUT,IN ,IN ,IN ,IN ,IN ,OUT,OUT},
+                                      {OUT,OUT,OUT,OUT,IN ,OUT,OUT,OUT,OUT}};
 
-        /* Vectors used */
+        // Vectors used
         readonly int[] neighborsCol = { 0, 1, 1, 0, -1, -1 };
         readonly int[,] neighborsRow = {{ -1, -1, 0, 1, 0, 1 },
                                         { -1,  0, 1, 1, 1, 0 }};
@@ -63,7 +63,34 @@ namespace KingsRun
 
         #region Public Methods
 
-        /* Método recebe uma _piece e a _toPosition de destino. */
+        public BoardManager()
+        {
+            //jogador de baixo
+            player1.Add(new Piece(0, 6));
+            player1.Add(new Piece(1, 6));
+            player1.Add(new Piece(2, 7));
+            player1.Add(new Piece(3, 7));
+            player1.Add(new Piece(4, 7));
+            player1.Add(new Piece(5, 7));
+            player1.Add(new Piece(6, 7));
+            player1.Add(new Piece(7, 6));
+            player1.Add(new Piece(8, 6));
+            player1.Add(new Piece(4, 8)); //rei
+
+            //jogador de cima
+            player2.Add(new Piece(0, 2));
+            player2.Add(new Piece(1, 1));
+            player2.Add(new Piece(2, 1));
+            player2.Add(new Piece(3, 0));
+            player2.Add(new Piece(4, 1));
+            player2.Add(new Piece(5, 0));
+            player2.Add(new Piece(6, 1));
+            player2.Add(new Piece(7, 1));
+            player2.Add(new Piece(8, 2));
+            player2.Add(new Piece(4, 0)); //rei
+        }
+
+        // Método recebe uma _piece e a _toPosition de destino.
         public void MoveAndKill(Piece _piece, Position _toPosition)
         {
             this.Move(_piece, _toPosition);
@@ -106,7 +133,7 @@ namespace KingsRun
             }
         }
 
-        /* Retorna lista de posições para as quais _piece poderá mover. */
+        //Retorna lista de posições para as quais _piece poderá mover.
         public List<Position> PossibleMoves(Piece _piece)
         {
             List<Position> result = new List<Position>();
@@ -125,10 +152,10 @@ namespace KingsRun
             return result;
         }
 
-        /* Verifica se uma determinada posição está ocupada. */
+        //Verifica se uma determinada posição está ocupada.
         public bool isOccupied(Position _position)
         {
-            /* Talvez mudar pro metodo Compare */
+            // Talvez mudar pro metodo Compare
             foreach (Piece piece in player1)
             {
                 if (piece.Position.X == _position.X &&
@@ -148,7 +175,7 @@ namespace KingsRun
             return false;
         }
 
-        /* Verifica se uma determinada posição está no tabuleiro. */
+        //Verifica se uma determinada posição está no tabuleiro.
         public bool isOnBoard(Position _position)
         {
             if (_position.X < 0 || _position.X >= 9 || _position.Y < 0 || _position.Y >= 9)
@@ -182,7 +209,7 @@ namespace KingsRun
             _piece.Status = turn;
         }
 
-        /* Verifica se existe um inimigo de _piece em _position, retornando um ponteiro para o inimigo. */
+        //Verifica se existe um inimigo de _piece em _position, retornando um ponteiro para o inimigo.
         private Piece isEnemyAt(Piece _piece, Position _position)
         {
             if (player1.Contains(_piece))
@@ -205,7 +232,7 @@ namespace KingsRun
             return null;
         }
 
-        /* Verifica se a _piece deve morrer. */
+        //Verifica se a _piece deve morrer.
         private bool mustDie(Piece _piece)
         {
             int num_enemies = 0;
@@ -221,7 +248,7 @@ namespace KingsRun
             return false;
         }
 
-        /* Retorna a posição da casa vizinha de _position. */
+        //Retorna a posição da casa vizinha de _position.
         private Position GetNeighbor(Position _position, Neighbors _neighbor)
         {
             return new Position(_position.X + neighborsCol[(int)_neighbor], _position.Y + neighborsRow[_position.X % 2, (int)_neighbor]);

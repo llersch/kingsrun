@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Microsoft.Xna.Framework;
 
 namespace KingsRun
 {
@@ -22,8 +23,10 @@ namespace KingsRun
             return new Position(grid.Column, grid.Row);
         }
 
-        public void DrawBoard(List<Piece> p1, List<Piece> p2)
+        public Rectangle PieceRect(Piece _piece)
         {
+            grid.SetCellIndex(_piece.Position.X, _piece.Position.Y);
+            return new Rectangle(grid.CenterX - 30, grid.CenterY - 30, 60, 60);            
         }
 
     }
