@@ -34,10 +34,12 @@ namespace KingsRun
             TransitionOnTime = TimeSpan.FromSeconds(0.5);
             TransitionOffTime = TimeSpan.FromSeconds(0.5);
 
+            IAturn = false;
+
             //Nossas Classes
             boardManager = new BoardManager();
             interfaceManager = new InterfaceManager(47, 10, 10, boardManager);
-            ia = new AI(boardManager,2); 
+            ia = new AI(boardManager, 2); 
             //
         }
 

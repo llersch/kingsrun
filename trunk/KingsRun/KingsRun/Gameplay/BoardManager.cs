@@ -145,7 +145,14 @@ namespace KingsRun
                 while (this.isOnBoard(current) && this.isOccupied(current)==null)
                 {
                     result.Add(current);
-                    current = this.GetNeighbor(current, n);
+                    if (_piece.Equals(Player1[9]) || _piece.Equals(Player2[9]))
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        current = this.GetNeighbor(current, n);
+                    }
                 }
             }
             return result;
