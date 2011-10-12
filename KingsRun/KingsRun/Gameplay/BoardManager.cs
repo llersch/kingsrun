@@ -30,8 +30,8 @@ namespace KingsRun
                                       {OUT,OUT,OUT,OUT,IN ,OUT,OUT,OUT,OUT}};
 
         // Vectors used
-        readonly int[] neighborsCol = { 0, 1, 1, 0, -1, -1 };
-        readonly int[,] neighborsRow = {{ -1, -1, 0, 1, 0, 1 },
+        readonly int[] neighborsCol =    { 0, 1, 1, 0, -1, -1 };
+        readonly int[,] neighborsRow = {{ -1, -1, 0, 1, 0, -1 },
                                         { -1,  0, 1, 1, 1, 0 }};
 
         #endregion
