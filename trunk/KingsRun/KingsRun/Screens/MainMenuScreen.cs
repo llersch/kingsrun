@@ -111,7 +111,7 @@ namespace KingsRun
 
         void DepthMenuEntrySelected(object sender, PlayerIndexEventArgs e)
         {
-            depth = (depth % 3) + 1;
+            depth = (depth % 4) + 1;
             SetMenuEntryText();
         }
 
