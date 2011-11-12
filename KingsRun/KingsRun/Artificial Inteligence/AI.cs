@@ -9,8 +9,8 @@ namespace KingsRun
     {
         #region Const Fields
 
-        const int MINVALUE = -10000;
-        const int MAXVALUE = 10000;
+        const int MINVALUE = -1000;
+        const int MAXVALUE = 1000;
         
         /* Pesos da funcao de avaliacao */
         const int PESO_PECA_INIMIGA = 2;
@@ -24,8 +24,8 @@ namespace KingsRun
 
         private Piece bestPiece; //Melhor peca a ser movimentada
         private Position bestMove; // Melhor movimento a ser realizado pela peca acima
-        private int maxdeep = 2; // Profundidade de avaliacao
-        private int deep = 2; // Profundidade de avaliacao
+        private int maxdeep; // Profundidade de avaliacao
+        private int deep; // Profundidade de avaliacao
         private BoardManager board; // Tabuleiro do jogo
         
 
@@ -49,7 +49,7 @@ namespace KingsRun
             this.bestMove = null;
 
 
-            this.next(this.board.Player2, this.board.Player1,MINVALUE,MAXVALUE); //Determina a melhor peca/jogada a ser realizada
+            this.next(this.board.Player2, this.board.Player1,MINVALUE-100,MAXVALUE+100); //Determina a melhor peca/jogada a ser realizada
             this.board.MoveAndKill(this.bestPiece, this.bestMove); //Realiza o movimento
         }
 
@@ -77,16 +77,33 @@ namespace KingsRun
                             int moveScore; //Armazena o melhor score possivel de se obter, movendo a peca "piece" na posicao "move";
                             this.board.MoveAndKill(piece, move);
 
-                            if (this.deep == 1)
+                            if (opPieces[9].Status != 0)
+                            //Avalia se com essa jogada o rei adversario foi capturado
                             {
-                                moveScore = this.evaluate(myPieces, opPieces);
-
+                                moveScore = (MAXVALUE+this.deep);
                             }
+
                             else
                             {
-                                this.deep--;
-                                moveScore = this.next(opPieces, myPieces,-beta,-alpha);
-                                this.deep++;
+
+                                if (this.deep == 1)
+                                {
+                                    //Como as pecas amigas tem peso maior, e necessario analisar quem ira avaliar..
+                                    if (maxdeep % 2 != 0)
+                                    {
+                                        moveScore = this.evaluate(myPieces, opPieces);
+                                    }
+                                    else
+                                    {
+                                        moveScore = -(this.evaluate(opPieces, myPieces));
+                                    }
+                                }
+                                else
+                                {
+                                    this.deep--;
+                                    moveScore = this.next(opPieces, myPieces, -beta, -alpha);
+                                    this.deep++;
+                                }
                             }
                             
                             this.board.UndoMove();
@@ -95,11 +112,11 @@ namespace KingsRun
                             {
                                 if (moveScore >= beta)
                                 {
-                                    return (MINVALUE);
+                                    return (MINVALUE-this.deep);
                                 }
 
                                 alpha = moveScore;
-                                
+
                                 if (this.deep == this.maxdeep)
                                 {
                                     this.bestMove = move;
@@ -123,28 +140,30 @@ namespace KingsRun
         //E recomendado trocar esses valores por variaveis
         {
             int score = 0;
-            foreach (Piece piece in myPieces)
-            {
-                if (piece.Status > 0)
-                    score = score - PESO_PECA_AMIGA;
+
+                foreach (Piece piece in myPieces)
+                {
+                    if (piece.Status > 0)
+                        score = score - PESO_PECA_AMIGA;
                     //score = score - 3;
-            }
+                }
 
-            // verifica se o rei amigo não está ameaçado
-            if (myPieces[9].Status > 0)
-                score = score - PESO_REI_AMIGO;
+                // verifica se o rei amigo não foi capturado
+                if (myPieces[9].Status > 0)
+                    score = score - PESO_REI_AMIGO;
 
-            foreach (Piece piece in opPieces)
-            {
-                if (piece.Status > 0)
-                    score = score + PESO_PECA_INIMIGA;
+                foreach (Piece piece in opPieces)
+                {
+                    if (piece.Status > 0)
+                        score = score + PESO_PECA_INIMIGA;
                     //score = score + 2;
-            }
+                }
 
-            // verifica se o rei inimigo pode ser vencido
-            if (opPieces[9].Status > 0)
-                score = score + PESO_REI_INIMIGO;
-            //
+                // verifica se o rei inimigo foi capturado
+                if (opPieces[9].Status > 0)
+                    score = score + PESO_REI_INIMIGO;
+                //
+            
             return (score);
         }
 
